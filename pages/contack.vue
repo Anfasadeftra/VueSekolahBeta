@@ -15,7 +15,6 @@
 .container{
   width: 75%;
   margin: 100px auto;
-  text-align: center;
 }
 
 .menu{
