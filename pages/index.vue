@@ -41,23 +41,31 @@
           class="add-button"
           @click="isCreating=!isCreating"
         >
-          Add Task
+        Add Task
         </a>
         <div v-else class="add-card">
-          <div class="card mb-2">
-            <div class="card-body d-flex flex-column p-0">
-              <input class="form-control border-0 mb-2" placeholder="Title" type="text" />
-              <textarea
-                class="form-control border-0 small"
-                placeholder="Description"
-                rows="3"
-              ></textarea>
+          <form @submit.prevent="addTask">
+            <div class="card mb-2">
+              <div class="card-body d-flex flex-column p-0">
+                <input v-model="newTask.title" class="form-control border-0 mb-2" placeholder="Title" type="text" />
+                <textarea 
+                v-model="newTask.description" 
+                class="form-control border-0 small" 
+                placeholder="Description" rows="3"
+                ></textarea>
+                <select v-model="newTask.category" class="form-select border-0 mb-2">
+                  <option value="">Pilih Kategori</option>
+                  <option value="Desain">Jasa Desain</option>
+                  <option value="Video">Jasa Video</option>
+                  <option value="Foto">Jasa Foto</option>
+                </select>
+              </div>
             </div>
-          </div>
-          <div class="button-wrapper d-flex">
-            <button class="btn btn-primary me-2">Save</button>
-            <button class="btn btn-outline-secondary" @click="isCreating = !isCreating">Cancel</button>
-          </div>
+            <div class="button-wrapper d-flex">
+              <button class="btn btn-primary me-2">Save</button>
+              <button class="btn btn-outline-secondary" @click="isCreating = !isCreating">Cancel</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -66,7 +74,6 @@
 
 <script>
 import CardData from '../components/Card/CardData.vue';
-
 export default {
   layout(context) {
     return 'custom';
@@ -118,8 +125,41 @@ export default {
           category: 'Foto',
         },
       ],
+      newTask: {
+          title: '',
+          description: '',
+          isDone: false,
+          category: '',
+      },
     };
   },
+
+  methods: {
+    addTask() {
+      if (this.newTask.title && this.newTask.description && this.newTask.category) {
+        const newTaskObject = {
+          title: this.newTask.title,
+          description: this.newTask.description,
+          isDone: this.newTask.isDone,
+          category: this.newTask.category,
+        };
+
+        this.tasks.push(newTaskObject);
+        this.resetForm();
+        this.isCreating = false;
+
+      } else {
+        alert('Semua field perlu diisi');
+      }
+    },
+    resetForm() {
+      this.newTask.title = '';
+      this.newTask.description = '';
+      this.newTask.isDone = false;
+      this.newTask.category = '';
+    },
+  },
+
   computed: {
     filteredTasks() {
       let filteredByCategory = [];
