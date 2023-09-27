@@ -1,9 +1,11 @@
 <template>
   <div>
-    <h2>{{ article.title }}</h2>
-    <img :src="article.img" :alt="article.title" width="500px"/>
-    <p>{{ article.content }}</p>
-    <router-link to="/Article">Kembali ke Daftar Artikel</router-link>
+    <div v-for="(article, index) in articles" :key="index">
+      <h2>{{ article.title }}</h2>
+      <img :src="article.img" :alt="article.title" width="700px"/>
+      <p>{{ article.content }}</p>
+      <router-link to="/Article">Kembali ke Daftar Artikel</router-link>
+    </div>
   </div>
 </template>
 
